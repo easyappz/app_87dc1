@@ -1,38 +1,351 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f7;
+  color: #222222;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#root {
+  min-height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.app-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.app-header {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e5;
+  box-sizing: border-box;
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.app-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222222;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-nav-link {
+  font-size: 14px;
+  color: #4b4b4b;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.app-nav-link:hover {
+  background-color: #f0f0f4;
+}
+
+.app-nav-link--active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.app-username {
+  font-size: 14px;
+  color: #333333;
+}
+
+.app-logout-button,
+.profile-logout-button {
+  border: none;
+  outline: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.app-logout-button:hover,
+.profile-logout-button:hover {
+  background-color: #dc2626;
+}
+
+.app-guest-label {
+  font-size: 14px;
+  color: #666666;
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-.App-link {
-  color: #61dafb;
+.page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-page-container,
+.chat-page-container {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e3e5ec;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.form-title {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 14px;
+  color: #444444;
+}
+
+.form-input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d4d4dd;
+  font-size: 14px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+}
+
+.form-submit-button {
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.form-submit-button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.form-submit-button:not(:disabled):hover {
+  background-color: #1d4ed8;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+.form-success {
+  font-size: 13px;
+  color: #15803d;
+}
+
+.form-footer-text {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #4b4b4b;
+}
+
+.form-footer-text a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.form-footer-text a:hover {
+  text-decoration: underline;
+}
+
+.profile-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.chat-page-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px);
+}
+
+.chat-page-header {
+  margin-bottom: 12px;
+}
+
+.chat-title {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.chat-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #666666;
+}
+
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border-radius: 10px;
+  border: 1px solid #e1e4ee;
+  overflow: hidden;
+  background-color: #f9fafb;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 12px 14px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.chat-message--own {
+  background-color: #e0edff;
+  border-color: #bfdbfe;
+}
+
+.chat-message__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.chat-message__user {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.chat-message__time {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.chat-message__text {
+  font-size: 14px;
+  color: #111827;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.chat-status {
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.chat-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+.chat-error--footer {
+  padding: 6px 8px;
+}
+
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid #d4d4dd;
+  font-size: 14px;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+}
+
+.chat-send-button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chat-send-button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.chat-send-button:not(:disabled):hover {
+  background-color: #1d4ed8;
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import ErrorBoundary from './ErrorBoundary';
 import './App.css';
 
@@ -26,6 +26,9 @@ function App() {
     navigate('/login');
   };
 
+  const navLinkClassName = ({ isActive }) =>
+    isActive ? 'app-nav-link app-nav-link--active' : 'app-nav-link';
+
   return (
     <div data-easytag="id1-react/src/App.jsx" className="app-root">
       <ErrorBoundary>
@@ -33,10 +36,20 @@ function App() {
           <div className="app-header-left">
             <span className="app-title">Групповой чат</span>
             <nav className="app-nav">
-              <Link to="/">Главная</Link>
-              <Link to="/register">Регистрация</Link>
-              <Link to="/login">Авторизация</Link>
-              {isAuthenticated && <Link to="/profile">Профиль</Link>}
+              <NavLink to="/" className={navLinkClassName} end>
+                Главная
+              </NavLink>
+              <NavLink to="/register" className={navLinkClassName}>
+                Регистрация
+              </NavLink>
+              <NavLink to="/login" className={navLinkClassName}>
+                Авторизация
+              </NavLink>
+              {isAuthenticated && (
+                <NavLink to="/profile" className={navLinkClassName}>
+                  Профиль
+                </NavLink>
+              )}
             </nav>
           </div>
           <div className="app-header-right">
