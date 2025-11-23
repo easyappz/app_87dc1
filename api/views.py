@@ -2,13 +2,14 @@ import secrets
 
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema
-from rest_framework import status
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import AuthToken, Member
+from .models import AuthToken, Member, Message
 from .serializers import (
+    HelloMessageSerializer,
     LoginSerializer,
     MemberRegisterSerializer,
     MemberSerializer,
@@ -20,12 +21,12 @@ class HelloView(APIView):
     """A simple API endpoint that returns a greeting message."""
 
     @extend_schema(
-        responses={200: MessageSerializer},
+        responses={200: HelloMessageSerializer},
         description="Get a hello world message",
     )
     def get(self, request):
         data = {"message": "Hello!", "timestamp": timezone.now()}
-        serializer = MessageSerializer(data)
+        serializer = HelloMessageSerializer(data)
         return Response(serializer.data)
 
 
@@ -97,3 +98,13 @@ class ProfileView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GroupMessageListCreateView(generics.ListCreateAPIView):
+    """List and create group chat messages."""
+
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Message.objects.select_related("member").order_by("created_at")

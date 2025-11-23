@@ -29,3 +29,19 @@ class AuthToken(models.Model):
 
     def __str__(self) -> str:  # pragma: no cover - simple representation
         return self.key
+
+
+class Message(models.Model):
+    member = models.ForeignKey(
+        Member,
+        related_name="messages",
+        on_delete=models.CASCADE,
+    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self) -> str:  # pragma: no cover - simple representation
+        return f"{self.member.username}: {self.text[:50]}"

@@ -1,10 +1,10 @@
 from django.contrib.auth.hashers import check_password, make_password
 from rest_framework import serializers
 
-from .models import Member
+from .models import Member, Message
 
 
-class MessageSerializer(serializers.Serializer):
+class HelloMessageSerializer(serializers.Serializer):
     message = serializers.CharField(max_length=200)
     timestamp = serializers.DateTimeField(read_only=True)
 
@@ -58,3 +58,22 @@ class LoginSerializer(serializers.Serializer):
 
         attrs["member"] = member
         return attrs
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    member_username = serializers.CharField(source="member.username", read_only=True)
+    text = serializers.CharField(allow_blank=False)
+
+    class Meta:
+        model = Message
+        fields = ["id", "member_username", "text", "created_at"]
+        read_only_fields = ["id", "member_username", "created_at"]
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        member = getattr(request, "user", None)
+
+        if member is None or not isinstance(member, Member):
+            raise serializers.ValidationError("Authenticated member is required.")
+
+        return Message.objects.create(member=member, **validated_data)

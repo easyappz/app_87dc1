@@ -15,7 +15,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Message'
+                $ref: '#/components/schemas/HelloMessage'
   /api/auth/register/:
     post:
       summary: Register a new member
@@ -104,6 +104,45 @@ paths:
           description: Validation error.
         "401":
           description: Unauthorized.
+  /api/chat/messages/:
+    get:
+      summary: List group chat messages
+      operationId: listGroupMessages
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: List of group chat messages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+        "401":
+          description: Unauthorized.
+    post:
+      summary: Create a new group chat message
+      operationId: createGroupMessage
+      security:
+        - tokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatMessageCreateRequest'
+      responses:
+        "201":
+          description: Message created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        "400":
+          description: Validation error.
+        "401":
+          description: Unauthorized.
 components:
   securitySchemes:
     tokenAuth:
@@ -114,7 +153,7 @@ components:
         Token-based authentication using the Authorization header.
         Use the format: "Token <key>".
   schemas:
-    Message:
+    HelloMessage:
       type: object
       properties:
         message:
@@ -175,3 +214,27 @@ components:
       required:
         - token
         - member
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        member_username:
+          type: string
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - member_username
+        - text
+        - created_at
+    ChatMessageCreateRequest:
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+        - text
