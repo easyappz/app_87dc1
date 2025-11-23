@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Easyapp Auth API
+  version: "1.0.0"
+servers:
+  - url: /
+paths:
+  /api/hello/:
+    get:
+      summary: Hello message
+      operationId: getHello
+      responses:
+        "200":
+          description: Greeting message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+  /api/auth/register/:
+    post:
+      summary: Register a new member
+      operationId: registerMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberRegisterRequest'
+      responses:
+        "201":
+          description: Member created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        "400":
+          description: Validation error.
+  /api/auth/login/:
+    post:
+      summary: Login and obtain auth token
+      operationId: loginMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: Login successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: Invalid credentials or validation error.
+        "401":
+          description: Unauthorized.
+  /api/auth/logout/:
+    post:
+      summary: Logout current member
+      operationId: logoutMember
+      security:
+        - tokenAuth: []
+      responses:
+        "204":
+          description: Logged out successfully.
+        "401":
+          description: Unauthorized.
+  /api/auth/profile/:
+    get:
+      summary: Get current member profile
+      operationId: getProfile
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          description: Current member profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        "401":
+          description: Unauthorized.
+    put:
+      summary: Update current member profile
+      operationId: updateProfile
+      security:
+        - tokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberProfileUpdateRequest'
+      responses:
+        "200":
+          description: Updated member profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        "400":
+          description: Validation error.
+        "401":
+          description: Unauthorized.
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        Token-based authentication using the Authorization header.
+        Use the format: "Token <key>".
+  schemas:
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - username
+        - created_at
+        - updated_at
+    MemberRegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    MemberProfileUpdateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        member:
+          $ref: '#/components/schemas/Member'
+      required:
+        - token
+        - member
